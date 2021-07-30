@@ -491,6 +491,13 @@ run_spec_2_state <- function(df, filter_fnc, caption_str, time_period){
 ```{r}
 run_spec_2_county(CW, base_county_filter, "Specification 2 - County X Week", "W")
 run_spec_2_county(CM, base_county_filter, "Specification 2 - County X Month", "M")
+
+run_spec_2_county(CW, rural_county_filter, "Specification 2 - County X Week - RURAL", "W")
+run_spec_2_county(CM, rural_county_filter, "Specification 2 - County X Month - RURAL", "M")
+
+run_spec_2_county(CW, urban_county_filter, "Specification 2 - County X Week - URBAN", "W")
+run_spec_2_county(CM, urban_county_filter, "Specification 2 - County X Month - URBAN", "M")
+
 ```
 
 ```{r}
