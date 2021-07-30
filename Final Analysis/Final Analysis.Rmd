@@ -29,15 +29,6 @@ CM = as_tibble(read.csv("C:/Users/mikha/OneDrive/Desktop/Dropbox/MIKHAEL NEW/mik
 
 SW = as_tibble(read.csv("C:/Users/mikha/OneDrive/Desktop/Dropbox/MIKHAEL NEW/mikhael school/Grad School/Master's/594/Data/FINAL DATA/BERT/FIXED/State X Week - CONSISTENT TWEETERS.csv"))
 SM = as_tibble(read.csv("C:/Users/mikha/OneDrive/Desktop/Dropbox/MIKHAEL NEW/mikhael school/Grad School/Master's/594/Data/FINAL DATA/BERT/FIXED/State X Month - CONSISTENT TWEETERS.csv"))
-
-
-# CW = as_tibble(read.csv("C:/Users/mikha/OneDrive/Desktop/Dropbox/MIKHAEL NEW/mikhael school/Grad School/Master's/594/Data/FINAL DATA/NO BERT/County X Week - CONSISTENT TWEETERS.csv"))
-# CM = as_tibble(read.csv("C:/Users/mikha/OneDrive/Desktop/Dropbox/MIKHAEL NEW/mikhael school/Grad School/Master's/594/Data/FINAL DATA/NO BERT/County X Month - CONSISTENT TWEETERS.csv"))
-# 
-# 
-# SW = as_tibble(read.csv("C:/Users/mikha/OneDrive/Desktop/Dropbox/MIKHAEL NEW/mikhael school/Grad School/Master's/594/Data/FINAL DATA/NO BERT/State X Week - CONSISTENT TWEETERS.csv"))
-# SM = as_tibble(read.csv("C:/Users/mikha/OneDrive/Desktop/Dropbox/MIKHAEL NEW/mikhael school/Grad School/Master's/594/Data/FINAL DATA/NO BERT/State X Month - CONSISTENT TWEETERS.csv"))
-
 ```
 
 
@@ -51,7 +42,16 @@ CW$FIPS <- CW$Usable.FIPS
 CM$FIPS <- CM$Usable.FIPS
 SM$State <- SM$Usable.STATE
 SW$State <- SW$Usable.STATE
+
+CW <- CW %>% filter((FIPS < 2000 | FIPS >= 3000) & (FIPS < 15000 | FIPS >= 16000)) #get rid of alaska and hawaii
+CM <- CM %>% filter((FIPS < 2000 | FIPS >= 3000) & (FIPS < 15000 | FIPS >= 16000)) #get rid of alaska and hawaii
+
+SW <- SW %>% filter(State!="ALASKA" & State!="HAWAII")
+SM <- SM %>% filter(State!="ALASKA" & State!="HAWAII")
 ```
+
+
+
 
 ```{r}
 CW = CW %>% 
@@ -304,14 +304,18 @@ renaming_dict = c("(Intercept)"="Intercept",
 base_county_filter <- function(df) {
   return(df %>%  filter(date >= "2020-03-01" & Sharp.Spike...Cases==0 & Sharp.Spike...Deaths==0))
 }
-
 base_state_filter <- function(df) {
   return(df %>%  filter(date >= "2020-03-01" & Missing.Counties.Now==0))
 }
 
-
-
+rural_county_filter <- function(df){
+  return(base_county_filter(df) %>% filter(Urban.Rural >= 4))
+}
+urban_county_filter <- function(df){
+  return(base_county_filter(df) %>% filter(Urban.Rural <= 3))
+}
 ```
+
 
 ```{r}
 run_spec_1_county <- function(df, filter_fnc, caption_str, time_period){
@@ -391,6 +395,13 @@ run_spec_1_state <- function(df, filter_fnc, caption_str, time_period){
 ```{r}
 run_spec_1_county(CW, base_county_filter, "Specification 1 - County X Week", "W")
 run_spec_1_county(CM, base_county_filter, "Specification 1 - County X Month", "M")
+
+run_spec_1_county(CW, rural_county_filter, "Specification 1 - County X Week - RURAL", "W")
+run_spec_1_county(CM, rural_county_filter, "Specification 1 - County X Month - RURAL", "M")
+
+run_spec_1_county(CW, urban_county_filter, "Specification 1 - County X Week - URBAN", "W")
+run_spec_1_county(CM, urban_county_filter, "Specification 1 - County X Month - URBAN", "M")
+
 ```
 
 ```{r}
@@ -400,11 +411,92 @@ run_spec_1_state(SM, base_state_filter, "Specification 1 - State X Month", "M")
 
 
 
+```{r}
+run_spec_2_county <- function(df, filter_fnc, caption_str, time_period){
+
+  save_path_root <- "C:/Users/mikha/OneDrive/Desktop/Dropbox/MIKHAEL NEW/mikhael school/Grad School/Master's/594/Final Analysis - R/TEX Output/"
+  if (time_period=="W"){
+  a = feols(fml = spec_2_cases, data=filter_fnc(df), se="hetero")
+  b = feols(fml = spec_2_cases_FE_FIPS, data=filter_fnc(df))
+  c = feols(fml = spec_2_BERT_cases, data=filter_fnc(df), se="hetero")
+  d = feols(fml = spec_2_BERT_cases_FE_FIPS, data=filter_fnc(df))
+  
+  e = feols(fml = spec_2_deaths, data=filter_fnc(df), se="hetero")
+  f = feols(fml = spec_2_deaths_FE_FIPS, data=filter_fnc(df))
+  g = feols(fml = spec_2_BERT_deaths, data=filter_fnc(df), se="hetero")
+  h = feols(fml = spec_2_BERT_deaths_FE_FIPS, data=filter_fnc(df))
+  }
+  else if (time_period=="M"){
+  a = feols(fml = spec_2_cases_month, data=filter_fnc(df), se="hetero")
+  b = feols(fml = spec_2_cases_FE_FIPS_month, data=filter_fnc(df))
+  c = feols(fml = spec_2_BERT_cases_month, data=filter_fnc(df), se="hetero")
+  d = feols(fml = spec_2_BERT_cases_FE_FIPS_month, data=filter_fnc(df))
+  
+  e = feols(fml = spec_2_deaths_month, data=filter_fnc(df), se="hetero")
+  f = feols(fml = spec_2_deaths_FE_FIPS_month, data=filter_fnc(df))
+  g = feols(fml = spec_2_BERT_deaths_month, data=filter_fnc(df), se="hetero")
+  h = feols(fml = spec_2_BERT_deaths_FE_FIPS_month, data=filter_fnc(df))
+  }
+  
+  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, file=paste(save_path_root, caption_str, ".tex", sep="")) %>%
+    kbl(caption = caption_str) %>%
+    kable_classic(full_width=F, html_font="Cambria")
+
+  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7) %>%
+    kbl(caption = caption_str) %>%
+    kable_classic(full_width=F, html_font="Cambria")
+}
+```
 
 
+```{r}
+run_spec_2_state <- function(df, filter_fnc, caption_str, time_period){
+
+  save_path_root <- "C:/Users/mikha/OneDrive/Desktop/Dropbox/MIKHAEL NEW/mikhael school/Grad School/Master's/594/Final Analysis - R/TEX Output/"
+  if (time_period=="W"){
+  a = feols(fml = spec_2_cases, data=filter_fnc(df), se="hetero")
+  b = feols(fml = spec_2_cases_FE_State, data=filter_fnc(df))
+  c = feols(fml = spec_2_BERT_cases, data=filter_fnc(df), se="hetero")
+  d = feols(fml = spec_2_BERT_cases_FE_State, data=filter_fnc(df))
+  
+  e = feols(fml = spec_2_deaths, data=filter_fnc(df), se="hetero")
+  f = feols(fml = spec_2_deaths_FE_State, data=filter_fnc(df))
+  g = feols(fml = spec_2_BERT_deaths, data=filter_fnc(df), se="hetero")
+  h = feols(fml = spec_2_BERT_deaths_FE_State, data=filter_fnc(df))
+  }
+  
+  else if (time_period=="M"){
+  a = feols(fml = spec_2_cases_month, data=filter_fnc(df), se="hetero")
+  b = feols(fml = spec_2_cases_FE_State_month, data=filter_fnc(df))
+  c = feols(fml = spec_2_BERT_cases_month, data=filter_fnc(df), se="hetero")
+  d = feols(fml = spec_2_BERT_cases_FE_State_month, data=filter_fnc(df))
+  
+  e = feols(fml = spec_2_deaths_month, data=filter_fnc(df), se="hetero")
+  f = feols(fml = spec_2_deaths_FE_State_month, data=filter_fnc(df))
+  g = feols(fml = spec_2_BERT_deaths_month, data=filter_fnc(df), se="hetero")
+  h = feols(fml = spec_2_BERT_deaths_FE_State_month, data=filter_fnc(df))
+  }
+  
+  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, file=paste(save_path_root, caption_str, ".tex", sep="")) %>%
+    kbl(caption = caption_str) %>%
+    kable_classic(full_width=F, html_font="Cambria")
+  
+    etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7) %>%
+    kbl(caption = caption_str) %>%
+    kable_classic(full_width=F, html_font="Cambria")
+}
+```
 
 
+```{r}
+run_spec_2_county(CW, base_county_filter, "Specification 2 - County X Week", "W")
+run_spec_2_county(CM, base_county_filter, "Specification 2 - County X Month", "M")
+```
 
+```{r}
+run_spec_2_state(SW, base_state_filter, "Specification 2 - State X Week", "W")
+run_spec_2_state(SM, base_state_filter, "Specification 2 - State X Month", "M")
+```
 
 
 

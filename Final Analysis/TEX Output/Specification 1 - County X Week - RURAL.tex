@@ -1,0 +1,32 @@
+\begin{tabular}{lcccccccc}
+\tabularnewline\midrule\midrule
+Dependent Variables:&\multicolumn{2}{c}{Diffed Log CT}&\multicolumn{2}{c}{Diffed Log BERT CT}&\multicolumn{2}{c}{Diffed Log CT}&\multicolumn{2}{c}{Diffed Log BERT CT}\\
+Model:&(1) & (2) & (3) & (4) & (5) & (6) & (7) & (8)\\
+\midrule \emph{Variables}&   &   &   &   &   &   &   &  \\
+Intercept&0.00005 &    & 0.00238 &    & -0.00010 &    & 0.00103 &   \\
+  &(0.00098) &    & (0.00183) &    & (0.00042) &    & (0.00086) &   \\
+Log cases per 100k&0.00027 & 0.00024 & 0.00116 & 0.00113 &    &    &    &   \\
+  &(0.00032) & (0.00031) & (0.00076) & (0.00073) &    &    &    &   \\
+Log cases per 100k (1 wk lag)&-0.00007 & -0.00009 & -0.00148$^{*}$ & -0.00150 &    &    &    &   \\
+  &(0.00036) & (0.00041) & (0.00086) & (0.00093) &    &    &    &   \\
+Log cases per 100k (2 wk lag)&-0.00026 & -0.00022 & 0.00098 & 0.00099 &    &    &    &   \\
+  &(0.00038) & (0.00041) & (0.00083) & (0.00095) &    &    &    &   \\
+Log cases per 100k (3 wk lag)&0.00064$^{*}$ & 0.00063 & -0.00098 & -0.00097 &    &    &    &   \\
+  &(0.00037) & (0.00045) & (0.00085) & (0.00094) &    &    &    &   \\
+Log cases per 100k (4 wk lag)&-0.00060$^{*}$ & -0.00060$^{*}$ & -0.00024 & -0.00022 &    &    &    &   \\
+  &(0.00032) & (0.00032) & (0.00073) & (0.00068) &    &    &    &   \\
+Log deaths per 100k&   &    &    &    & 0.00047 & 0.00048 & 0.00002 & -0.00004\\
+  &   &    &    &    & (0.00034) & (0.00032) & (0.00079) & (0.00080)\\
+Log deaths per 100k (1 wk lag)&   &    &    &    & -0.00030 & -0.00032 & -0.00093 & -0.00101\\
+  &   &    &    &    & (0.00036) & (0.00034) & (0.00081) & (0.00081)\\
+\midrule \emph{Fixed-effects}&   &   &   &   &   &   &   &  \\
+County &  & Yes &  & Yes &  & Yes &  & Yes\\
+\midrule \emph{Fit statistics}&  & & & & & & & \\
+Standard-Errors& Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)\\
+Observations & 21,233&21,233&21,233&21,233&22,339&22,339&22,339&22,339\\
+R$^2$ & 0.00022&0.00794&0.00035&0.00520&0.00008&0.00816&0.00009&0.00449\\
+Within R$^2$ & &0.00021&&0.00034&&0.00008&&0.00010\\
+\midrule\midrule\multicolumn{9}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+\end{tabular}
+
+

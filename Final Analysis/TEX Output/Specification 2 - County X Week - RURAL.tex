@@ -1,0 +1,32 @@
+\begin{tabular}{lcccccccc}
+\tabularnewline\midrule\midrule
+Dependent Variables:&\multicolumn{2}{c}{Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months}&\multicolumn{2}{c}{Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months}&\multicolumn{2}{c}{Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months}&\multicolumn{2}{c}{Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months}\\
+Model:&(1) & (2) & (3) & (4) & (5) & (6) & (7) & (8)\\
+\midrule \emph{Variables}&   &   &   &   &   &   &   &  \\
+Intercept&-0.00132 &    & -0.00132 &    & 0.00013 &    & 0.00013 &   \\
+  &(0.00643) &    & (0.00643) &    & (0.00293) &    & (0.00293) &   \\
+Log cases per 100k&-0.00143 & -0.00139 & -0.00143 & -0.00139 &    &    &    &   \\
+  &(0.00260) & (0.00274) & (0.00260) & (0.00274) &    &    &    &   \\
+Log cases per 100k (1 wk lag)&0.00265 & 0.00266 & 0.00265 & 0.00266 &    &    &    &   \\
+  &(0.00300) & (0.00380) & (0.00300) & (0.00380) &    &    &    &   \\
+Log cases per 100k (2 wk lag)&0.00126 & 0.00126 & 0.00126 & 0.00126 &    &    &    &   \\
+  &(0.00298) & (0.00301) & (0.00298) & (0.00301) &    &    &    &   \\
+Log cases per 100k (3 wk lag)&-0.00629$^{**}$ & -0.00627$^{**}$ & -0.00629$^{**}$ & -0.00627$^{**}$ &    &    &    &   \\
+  &(0.00297) & (0.00313) & (0.00297) & (0.00313) &    &    &    &   \\
+Log cases per 100k (4 wk lag)&0.00412 & 0.00413 & 0.00412 & 0.00413 &    &    &    &   \\
+  &(0.00254) & (0.00251) & (0.00254) & (0.00251) &    &    &    &   \\
+Log deaths per 100k&   &    &    &    & -0.00159 & -0.00164 & -0.00159 & -0.00164\\
+  &   &    &    &    & (0.00260) & (0.00282) & (0.00260) & (0.00282)\\
+Log deaths per 100k (1 wk lag)&   &    &    &    & 0.00120 & 0.00115 & 0.00120 & 0.00115\\
+  &   &    &    &    & (0.00263) & (0.00291) & (0.00263) & (0.00291)\\
+\midrule \emph{Fixed-effects}&   &   &   &   &   &   &   &  \\
+County &  & Yes &  & Yes &  & Yes &  & Yes\\
+\midrule \emph{Fit statistics}&  & & & & & & & \\
+Standard-Errors& Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)\\
+Observations & 23,970&23,970&23,970&23,970&25,119&25,119&25,119&25,119\\
+R$^2$ & 0.00025&0.00056&0.00025&0.00056&0.00002&0.00029&0.00002&0.00029\\
+Within R$^2$ & &0.00025&&0.00025&&0.00002&&0.00002\\
+\midrule\midrule\multicolumn{9}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+\end{tabular}
+
+
