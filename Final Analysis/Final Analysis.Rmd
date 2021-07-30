@@ -265,6 +265,39 @@ spec_2_BERT_deaths_FE_State_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.Afte
 
 ```
 
+
+```{r}
+renaming_dict = c("(Intercept)"="Intercept",
+                  "Clipped.log.Daily.Cases.per.100k"="Log cases per 100k", 
+                  "Clipped.log.Daily.Cases.per.100k.lag1"="Log cases per 100k (1 wk lag)",
+                  "Clipped.log.Daily.Cases.per.100k.lag2"="Log cases per 100k (2 wk lag)",
+                  "Clipped.log.Daily.Cases.per.100k.lag3"="Log cases per 100k (3 wk lag)",
+                  "Clipped.log.Daily.Cases.per.100k.lag4"="Log cases per 100k (4 wk lag)",
+                  
+                  "Clipped.log.Daily.Deaths.per.100k"="Log deaths per 100k", 
+                  "Clipped.log.Daily.Deaths.per.100k.lag1"="Log deaths per 100k (1 wk lag)",
+                  "Clipped.log.Daily.Deaths.per.100k.lag2"="Log deaths per 100k (2 wk lag)",
+                  "Clipped.log.Daily.Deaths.per.100k.lag3"="Log deaths per 100k (3 wk lag)",
+                  "Clipped.log.Daily.Deaths.per.100k.lag4"="Log deaths per 100k (4 wk lag)",
+                  
+                  "Diffed.Log.CT.Tweets.Per.Tweet"="Diffed Log CT",
+                  "Diffed.Log.BERT.CT.Tweets.Per.Tweet"="Diffed Log BERT CT",
+                  
+                  "factor(FIPS)"="County",
+                  
+                  "CW_spec_1_cases"="as ",
+                  "CW_spec_1_cases_BERT"="",
+                  "CW_spec_1_cases_FE_FIPS"="",
+                  "CW_spec_1_cases_BERT_FE_FIPS"="",
+                  "CW_spec_1_deaths"="",
+                  "CW_spec_1_deaths_BERT"="",
+                  "CW_spec_1_deaths_FE_FIPS"="",
+                  "CW_spec_1_deaths_BERT_FE_FIPS"=""
+                  
+                  )
+```
+
+
 ```{r}
 # FILTERING FUNCTIONS
 
@@ -355,14 +388,10 @@ run_spec_1_state <- function(df, filter_fnc, caption_str, time_period){
 }
 ```
 
-
-
 ```{r}
 run_spec_1_county(CW, base_county_filter, "Specification 1 - County X Week", "W")
 run_spec_1_county(CM, base_county_filter, "Specification 1 - County X Month", "M")
 ```
-
-
 
 ```{r}
 run_spec_1_state(SW, base_state_filter, "Specification 1 - State X Week", "W")
@@ -370,17 +399,9 @@ run_spec_1_state(SM, base_state_filter, "Specification 1 - State X Month", "M")
 ```
 
 
-```{r}
-glimpse(SM)
-```
 
 
 
-```{r}
-# SM %>% filter(date >= "2020-03-01" & Sharp.Spike...Cases==0 & Sharp.Spike...Deaths==0) %>% filter(Missing.Counties.Now==0)
-glimpse(SM)
-# base_county_filter(SM)
-```
 
 
 
@@ -402,117 +423,6 @@ glimpse(SM)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r}
-# MAIN SPECIFICATION (unweighted, w/ basic filter)
-
-
-CW_spec_1_cases = feols(fml = spec_1_cases, data=base_county_filter(CW), se="hetero")
-CW_spec_1_deaths = feols(fml = spec_1_deaths, data=base_county_filter(CW), se="hetero")
-CW_spec_1_cases_BERT = feols(fml = spec_1_BERT_cases, data=base_county_filter(CW), se="hetero")
-CW_spec_1_deaths_BERT = feols(fml = spec_1_BERT_deaths, data=base_county_filter(CW), se="hetero")
-
-CW_spec_1_cases_FE_FIPS = feols(fml = spec_1_cases_FE_FIPS, data=base_county_filter(CW))
-CW_spec_1_deaths_FE_FIPS = feols(fml = spec_1_deaths_FE_FIPS, data=base_county_filter(CW))
-CW_spec_1_cases_BERT_FE_FIPS = feols(fml = spec_1_BERT_cases_FE_FIPS, data=base_county_filter(CW))
-CW_spec_1_deaths_BERT_FE_FIPS = feols(fml = spec_1_BERT_deaths_FE_FIPS, data=base_county_filter(CW))
-
-
-# stargazer(CW_spec_1_cases, CW_spec_1_deaths, CW_spec_1_cases_BERT, CW_spec_1_deaths_BERT, CW_spec_1_cases_FE_FIPS, CW_spec_1_deaths_FE_FIPS, CW_spec_1_cases_BERT_FE_FIPS, CW_spec_1_deaths_BERT_FE_FIPS, type="html")
-
-models <- list(CW_spec_1_cases, CW_spec_1_cases_BERT, CW_spec_1_cases_FE_FIPS, CW_spec_1_cases_BERT_FE_FIPS, CW_spec_1_deaths, CW_spec_1_deaths_BERT, CW_spec_1_deaths_FE_FIPS,  CW_spec_1_deaths_BERT_FE_FIPS)
-
-# etable(CW_spec_1_cases) %>% 
-#   kbl(caption = "test") %>% 
-#   kable_classic(full_width=F, html_font="Cambria")
-```
-
-
-```{r}
-renaming_dict = c("(Intercept)"="Intercept",
-                  "Clipped.log.Daily.Cases.per.100k"="Log cases per 100k", 
-                  "Clipped.log.Daily.Cases.per.100k.lag1"="Log cases per 100k (1 wk lag)",
-                  "Clipped.log.Daily.Cases.per.100k.lag2"="Log cases per 100k (2 wk lag)",
-                  "Clipped.log.Daily.Cases.per.100k.lag3"="Log cases per 100k (3 wk lag)",
-                  "Clipped.log.Daily.Cases.per.100k.lag4"="Log cases per 100k (4 wk lag)",
-                  
-                  "Clipped.log.Daily.Deaths.per.100k"="Log deaths per 100k", 
-                  "Clipped.log.Daily.Deaths.per.100k.lag1"="Log deaths per 100k (1 wk lag)",
-                  "Clipped.log.Daily.Deaths.per.100k.lag2"="Log deaths per 100k (2 wk lag)",
-                  "Clipped.log.Daily.Deaths.per.100k.lag3"="Log deaths per 100k (3 wk lag)",
-                  "Clipped.log.Daily.Deaths.per.100k.lag4"="Log deaths per 100k (4 wk lag)",
-                  
-                  "Diffed.Log.CT.Tweets.Per.Tweet"="Diffed Log CT",
-                  "Diffed.Log.BERT.CT.Tweets.Per.Tweet"="Diffed Log BERT CT",
-                  
-                  "factor(FIPS)"="County",
-                  
-                  "CW_spec_1_cases"="as ",
-                  "CW_spec_1_cases_BERT"="",
-                  "CW_spec_1_cases_FE_FIPS"="",
-                  "CW_spec_1_cases_BERT_FE_FIPS"="",
-                  "CW_spec_1_deaths"="",
-                  "CW_spec_1_deaths_BERT"="",
-                  "CW_spec_1_deaths_FE_FIPS"="",
-                  "CW_spec_1_deaths_BERT_FE_FIPS"=""
-                  
-                  )
-```
-
-
-```{r}
-# etable(models, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict) %>% 
-#   kbl(caption = "Specification 1 - County X Week") %>% 
-#   kable_classic(full_width=F, html_font="Cambria")
-
-
-etable(CW_spec_1_cases, CW_spec_1_cases_FE_FIPS, CW_spec_1_cases_BERT, CW_spec_1_cases_BERT_FE_FIPS, CW_spec_1_deaths, CW_spec_1_deaths_BERT, CW_spec_1_deaths_FE_FIPS,  CW_spec_1_deaths_BERT_FE_FIPS, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7) %>%
-  kbl(caption = "Specification 1 - County X Week") %>%
-  kable_classic(full_width=F, html_font="Cambria")
-
-```
-
-
-
-
-
-
-```{r}
-# filtered_CW <- CW %>%  filter(Num..Users > 50 & Sharp.Spike...Cases==0 & date > "2019-03-01")
-filtered_CW <- CW %>%  filter(Sharp.Spike...Cases==0 & date > "2019-03-01")
-
-CW_reg1_cases = feols(fml = spec_1_cases, weights=filtered_CW$Num..Users, data=filtered_CW)
-CW_reg1_deaths = feols(fml= spec_1_deaths, weights=filtered_CW$Num..Users, data=filtered_CW)
-
-CW_reg1_BERT_cases = feols(fml = spec_1_BERT_cases, weights = filtered_CW$Num..Users, data=filtered_CW)
-CW_reg1_BERT_deaths = feols(fml= spec_1_BERT_deaths, weights = filtered_CW$Num..Users, data=filtered_CW)
-
-# CW_reg1_cases = feols(fml = spec_1_cases, weights=filtered_CW$Num..Users, data=filtered_CW)
-# CW_reg1_deaths = feols(fml= spec_1_deaths, weights=filtered_CW$Num..Users, data=filtered_CW)
-# 
-# CW_reg1_BERT_cases = feols(fml = spec_1_BERT_cases, weights = filtered_CW$Num..Users, data=filtered_CW)
-# CW_reg1_BERT_deaths = feols(fml= spec_1_BERT_deaths, weights = filtered_CW$Num..Users, data=filtered_CW)
-
-
-summary(CW_reg1_cases)
-summary(CW_reg1_deaths)
-summary(CW_reg1_BERT_cases)
-summary(CW_reg1_BERT_deaths)
-```
 
 
 
@@ -525,5 +435,54 @@ ggplot(data=SM, aes(x=date))+
   geom_point(aes(y=Diffed.Log.BERT.COVID.CT.Tweets.Per.Tweet), colour="red")+
   geom_point(aes(y=Clipped.log.Daily.Cases.per.100k), colour="black")
 
+```
+
+
+
+
+
+
+
+
+
+```{r}
+aggregate_by_date <- function(df){
+  return( df %>% group_by(date) %>% summarize(Log.CT.Tweets.Per.Tweet = sum(Log.CT.Tweets.Per.Tweet*Num..Users, na.rm=TRUE),
+                                             Log.BERT.COVID.CT.Tweets.Per.Tweet = sum(Log.BERT.COVID.CT.Tweets.Per.Tweet*Num..Users, na.rm=TRUE),
+                                             Daily.Cases = sum(Daily.Cases, na.rm=TRUE)))
+}
+aggregate_by_date(SM)
+agg_SM <- aggregate_by_date(SM)
+agg_SW <- aggregate_by_date(SW)
+
+agg_CM <- aggregate_by_date(CM)
+agg_CW <- aggregate_by_date(CW)
+```
+
+```{r}
+
+library(patchwork)
+plot_agg_df <- function(agg_df) {
+  ggplot(data=agg_df, aes(x=date))+
+  geom_point(aes(y=Log.CT.Tweets.Per.Tweet), colour="red", label="CT")+
+  geom_point(aes(y=Log.BERT.CT.Tweets.Per.Tweet), colour="black")
+}
+
+# plot_agg_df(agg_CM)
+plt1 = ggplot(data=agg_SM, aes(x=date))+
+  geom_line(aes(y=Log.CT.Tweets.Per.Tweet), colour="red")
+
+plt2 = ggplot(data=agg_SM, aes(x=date))+
+  geom_line(aes(y=Log.BERT.COVID.CT.Tweets.Per.Tweet), colour="black")
+
+plt3 = ggplot(data=agg_SM, aes(x=date))+
+  geom_line(aes(y=Daily.Cases), colour="black")
+
+
+plt1 + plt2 + plt3
+```
+
+```{r}
+aggregate_by_date(SM)
 ```
 
