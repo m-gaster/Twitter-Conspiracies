@@ -266,6 +266,7 @@ spec_2_BERT_deaths_FE_State_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.Afte
 ```
 
 
+
 ```{r}
 renaming_dict = c("(Intercept)"="Intercept",
                   "Clipped.log.Daily.Cases.per.100k"="Log cases per 100k", 
@@ -300,6 +301,10 @@ renaming_dict = c("(Intercept)"="Intercept",
 
 ```{r}
 # FILTERING FUNCTIONS
+
+base_year_filter <-function(df){
+  return(df %>%  filter(date >= "2020-03-01"))
+}
 
 base_county_filter <- function(df) {
   return(df %>%  filter(date >= "2020-03-01" & Sharp.Spike...Cases==0 & Sharp.Spike...Deaths==0))
@@ -344,7 +349,7 @@ run_spec_1_county <- function(df, filter_fnc, caption_str, time_period){
   h = feols(fml = spec_1_BERT_deaths_FE_FIPS_month, data=filter_fnc(df))
   }
   
-  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, file=paste(save_path_root, caption_str, ".tex", sep="")) %>%
+  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, file=paste(save_path_root, caption_str, ".tex", sep=""), replace=TRUE) %>%
     kbl(caption = caption_str) %>%
     kable_classic(full_width=F, html_font="Cambria")
 
@@ -382,7 +387,7 @@ run_spec_1_state <- function(df, filter_fnc, caption_str, time_period){
   h = feols(fml = spec_1_BERT_deaths_FE_State_month, data=filter_fnc(df))
   }
   
-  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, file=paste(save_path_root, caption_str, ".tex", sep="")) %>%
+  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, file=paste(save_path_root, caption_str, ".tex", sep=""), replace=TRUE) %>%
     kbl(caption = caption_str) %>%
     kable_classic(full_width=F, html_font="Cambria")
   
@@ -438,7 +443,7 @@ run_spec_2_county <- function(df, filter_fnc, caption_str, time_period){
   h = feols(fml = spec_2_BERT_deaths_FE_FIPS_month, data=filter_fnc(df))
   }
   
-  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, file=paste(save_path_root, caption_str, ".tex", sep="")) %>%
+  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, file=paste(save_path_root, caption_str, ".tex", sep=""), replace=TRUE) %>%
     kbl(caption = caption_str) %>%
     kable_classic(full_width=F, html_font="Cambria")
 
@@ -477,11 +482,11 @@ run_spec_2_state <- function(df, filter_fnc, caption_str, time_period){
   h = feols(fml = spec_2_BERT_deaths_FE_State_month, data=filter_fnc(df))
   }
   
-  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, file=paste(save_path_root, caption_str, ".tex", sep="")) %>%
+  etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, file=paste(save_path_root, caption_str, ".tex", sep=""), fixef_sizes=TRUE, replace=TRUE) %>%
     kbl(caption = caption_str) %>%
     kable_classic(full_width=F, html_font="Cambria")
   
-    etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7) %>%
+    etable(a,b,c,d,e,f,g,h, signifCode = c("***"=0.01,"**"=0.05,"*"=0.10), dict=renaming_dict, digits = 5, powerBelow = -7, fixef_sizes=TRUE) %>%
     kbl(caption = caption_str) %>%
     kable_classic(full_width=F, html_font="Cambria")
 }
@@ -546,10 +551,24 @@ ggplot(data=SM, aes(x=date))+
 
 ```{r}
 aggregate_by_date <- function(df){
-  return( df %>% group_by(date) %>% summarize(Log.CT.Tweets.Per.Tweet = sum(Log.CT.Tweets.Per.Tweet*Num..Users, na.rm=TRUE),
-                                             Log.BERT.COVID.CT.Tweets.Per.Tweet = sum(Log.BERT.COVID.CT.Tweets.Per.Tweet*Num..Users, na.rm=TRUE),
-                                             Daily.Cases = sum(Daily.Cases, na.rm=TRUE)))
+   df = df %>% group_by(date) %>% summarize(COVID.CT.Tweet...COUNT = sum(COVID.CT.Tweet...COUNT, na.rm=TRUE),
+                                             BERT.COVID.CT.Tweet...COUNT = sum(BERT.COVID.CT.Tweet...COUNT, na.rm=TRUE),
+                                             Daily.Cases = sum(Daily.Cases, na.rm=TRUE),
+                                             Daily.Deaths = sum(Daily.Deaths, na.rm=TRUE)) %>% base_year_filter()
+
+   
+  df <- df %>% mutate_all(funs(diff = diff(.)))
+   
+   
+   # for(col in names(df)){
+   #   print(paste(col, "_diff", sep=""))
+   #   df[[paste(col, "_diff", sep="")]] <- diff(df$col)
+   # }
+
+   return(df)
+   
 }
+
 aggregate_by_date(SM)
 agg_SM <- aggregate_by_date(SM)
 agg_SW <- aggregate_by_date(SW)
@@ -563,22 +582,26 @@ agg_CW <- aggregate_by_date(CW)
 library(patchwork)
 plot_agg_df <- function(agg_df) {
   ggplot(data=agg_df, aes(x=date))+
-  geom_point(aes(y=Log.CT.Tweets.Per.Tweet), colour="red", label="CT")+
+  geom_point(aes(y=COVID.CT.Tweet...COUNT), colour="red", label="CT")+
   geom_point(aes(y=Log.BERT.CT.Tweets.Per.Tweet), colour="black")
 }
 
 # plot_agg_df(agg_CM)
 plt1 = ggplot(data=agg_SM, aes(x=date))+
-  geom_line(aes(y=Log.CT.Tweets.Per.Tweet), colour="red")
+  geom_line(aes(y=diff(COVID.CT.Tweet...COUNT)), colour="blue")
 
 plt2 = ggplot(data=agg_SM, aes(x=date))+
-  geom_line(aes(y=Log.BERT.COVID.CT.Tweets.Per.Tweet), colour="black")
+  geom_line(aes(y=diff(BERT.COVID.CT.Tweet...COUNT)), colour="purple")
 
 plt3 = ggplot(data=agg_SM, aes(x=date))+
-  geom_line(aes(y=Daily.Cases), colour="black")
+  geom_line(aes(y=diff(Daily.Cases)), colour="red")
+
+plt4 = ggplot(data=agg_SM, aes(x=date))+
+  geom_line(aes(y=diff(Daily.Deaths)), colour="black")
 
 
-plt1 + plt2 + plt3
+
+# plt1 + plt2 + plt3 + plt4 + plot_layout(ncol=1)
 ```
 
 ```{r}
