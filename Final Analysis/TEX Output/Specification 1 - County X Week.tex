@@ -126,3 +126,67 @@ Within R$^2$ & &0.00014&&0.00026&&0.00008&&0.00002\\
 \end{tabular}
 
 
+\begin{tabular}{lcccccccc}
+\tabularnewline\midrule\midrule
+Dependent Variables:&\multicolumn{2}{c}{Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months}&\multicolumn{2}{c}{Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months}&\multicolumn{2}{c}{Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months}&\multicolumn{2}{c}{Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months}\\
+Model:&(1) & (2) & (3) & (4) & (5) & (6) & (7) & (8)\\
+\midrule \emph{Variables}&   &   &   &   &   &   &   &  \\
+Intercept&-0.00179 &    & -0.00179 &    & -0.00072 &    & -0.00072 &   \\
+  &(0.00489) &    & (0.00489) &    & (0.00212) &    & (0.00212) &   \\
+Log cases per 100k&-0.00040 & -0.00038 & -0.00040 & -0.00038 &    &    &    &   \\
+  &(0.00211) & (0.00221) & (0.00211) & (0.00221) &    &    &    &   \\
+Log cases per 100k (1 wk lag)&0.00142 & 0.00144 & 0.00142 & 0.00144 &    &    &    &   \\
+  &(0.00252) & (0.00320) & (0.00252) & (0.00320) &    &    &    &   \\
+Log cases per 100k (2 wk lag)&0.00076 & 0.00077 & 0.00076 & 0.00077 &    &    &    &   \\
+  &(0.00253) & (0.00257) & (0.00253) & (0.00257) &    &    &    &   \\
+Log cases per 100k (3 wk lag)&-0.00494$^{**}$ & -0.00491$^{*}$ & -0.00494$^{**}$ & -0.00491$^{*}$ &    &    &    &   \\
+  &(0.00248) & (0.00266) & (0.00248) & (0.00266) &    &    &    &   \\
+Log cases per 100k (4 wk lag)&0.00355$^{*}$ & 0.00356$^{*}$ & 0.00355$^{*}$ & 0.00356$^{*}$ &    &    &    &   \\
+  &(0.00200) & (0.00197) & (0.00200) & (0.00197) &    &    &    &   \\
+Log deaths per 100k&   &    &    &    & -0.00159 & -0.00157 & -0.00159 & -0.00157\\
+  &   &    &    &    & (0.00212) & (0.00235) & (0.00212) & (0.00235)\\
+Log deaths per 100k (1 wk lag)&   &    &    &    & 0.00211 & 0.00214 & 0.00211 & 0.00214\\
+  &   &    &    &    & (0.00212) & (0.00240) & (0.00212) & (0.00240)\\
+\midrule \emph{Fixed-effects}&   &   &   &   &   &   &   &  \\
+County &  & Yes &  & Yes &  & Yes &  & Yes\\
+\midrule \emph{Fit statistics}&  & & & & & & & \\
+Standard-Errors& Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)\\
+Observations & 47,790&47,790&47,790&47,790&50,015&50,015&50,015&50,015\\
+R$^2$ & 0.00012&0.00043&0.00012&0.00043&0.00002&0.00029&0.00002&0.00029\\
+Within R$^2$ & &0.00012&&0.00012&&0.00002&&0.00002\\
+\midrule\midrule\multicolumn{9}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+\end{tabular}
+
+
+\begin{tabular}{lcccccccc}
+\tabularnewline\midrule\midrule
+Dependent Variables:&\multicolumn{2}{c}{Diffed Log CT}&\multicolumn{2}{c}{Diffed Log BERT CT}&\multicolumn{2}{c}{Diffed Log CT}&\multicolumn{2}{c}{Diffed Log BERT CT}\\
+Model:&(1) & (2) & (3) & (4) & (5) & (6) & (7) & (8)\\
+\midrule \emph{Variables}&   &   &   &   &   &   &   &  \\
+Intercept&0.00006 &    & 0.00266$^{*}$ &    & $-2.28\times 10^{-7}$ &    & 0.00059 &   \\
+  &(0.00069) &    & (0.00144) &    & (0.00028) &    & (0.00062) &   \\
+Log cases per 100k&0.00026 & 0.00026 & 0.00063 & 0.00063 &    &    &    &   \\
+  &(0.00025) & (0.00024) & (0.00064) & (0.00066) &    &    &    &   \\
+Log cases per 100k (1 wk lag)&-0.00008 & -0.00008 & -0.00037 & -0.00037 &    &    &    &   \\
+  &(0.00029) & (0.00034) & (0.00077) & (0.00090) &    &    &    &   \\
+Log cases per 100k (2 wk lag)&-0.00023 & -0.00020 & 0.00055 & 0.00052 &    &    &    &   \\
+  &(0.00030) & (0.00033) & (0.00076) & (0.00086) &    &    &    &   \\
+Log cases per 100k (3 wk lag)&0.00049$^{*}$ & 0.00048 & -0.00149$^{**}$ & -0.00150$^{*}$ &    &    &    &   \\
+  &(0.00030) & (0.00035) & (0.00073) & (0.00082) &    &    &    &   \\
+Log cases per 100k (4 wk lag)&-0.00047$^{*}$ & -0.00046$^{*}$ & 0.00008 & 0.00007 &    &    &    &   \\
+  &(0.00024) & (0.00024) & (0.00059) & (0.00057) &    &    &    &   \\
+Log deaths per 100k&   &    &    &    & 0.00038 & 0.00042 & -0.00013 & -0.00013\\
+  &   &    &    &    & (0.00026) & (0.00026) & (0.00063) & (0.00063)\\
+Log deaths per 100k (1 wk lag)&   &    &    &    & -0.00038 & -0.00038 & -0.00033 & -0.00038\\
+  &   &    &    &    & (0.00027) & (0.00028) & (0.00064) & (0.00063)\\
+\midrule \emph{Fixed-effects}&   &   &   &   &   &   &   &  \\
+County &  & Yes &  & Yes &  & Yes &  & Yes\\
+\midrule \emph{Fit statistics}&  & & & & & & & \\
+Standard-Errors& Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)\\
+Observations & 43,520&43,520&43,520&43,520&45,671&45,671&45,671&45,671\\
+R$^2$ & 0.00015&0.00812&0.00025&0.00601&0.00007&0.00799&0.00002&0.00510\\
+Within R$^2$ & &0.00014&&0.00026&&0.00008&&0.00002\\
+\midrule\midrule\multicolumn{9}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+\end{tabular}
+
+
