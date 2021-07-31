@@ -18,6 +18,9 @@ library(kableExtra) # Make nice summary tables
 library(fixest) # Estimate models with many fixed effects quickly (feols) and make nice regression taables (etable)
 library(modelsummary) # Alternative to fixest::etable, preferred by some
 library(stargazer)
+library(cowplot)
+library(latex2exp)
+library(patchwork)
 ```
 
 
@@ -212,7 +215,7 @@ spec_1_BERT_deaths_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Dai
 
 
 # FE FIPS - MONTH
-spec_1_cases_FE_FIPS_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1
+spec_1_cases_FE_FIPS_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1 | factor(FIPS)
 
 spec_1_deaths_FE_FIPS_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 | factor(FIPS)
 
@@ -305,25 +308,25 @@ spec_2_BERT_deaths_FE_State_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.Afte
 
 ```{r}
 renaming_dict = c("(Intercept)"="Intercept",
-                  "Clipped.log.Daily.Cases.per.100k.lead1"="Log cases per 100k (1 wk lead)",
+                  "Clipped.log.Daily.Cases.per.100k.lead1"="Log cases per 100k (1 lead)",
                   "Clipped.log.Daily.Cases.per.100k"="Log cases per 100k", 
-                  "Clipped.log.Daily.Cases.per.100k.lag1"="Log cases per 100k (1 wk lag)",
-                  "Clipped.log.Daily.Cases.per.100k.lag2"="Log cases per 100k (2 wk lag)",
-                  "Clipped.log.Daily.Cases.per.100k.lag3"="Log cases per 100k (3 wk lag)",
-                  "Clipped.log.Daily.Cases.per.100k.lag4"="Log cases per 100k (4 wk lag)",
+                  "Clipped.log.Daily.Cases.per.100k.lag1"="Log cases per 100k (1 lag)",
+                  "Clipped.log.Daily.Cases.per.100k.lag2"="Log cases per 100k (2 lag)",
+                  "Clipped.log.Daily.Cases.per.100k.lag3"="Log cases per 100k (3 lag)",
+                  "Clipped.log.Daily.Cases.per.100k.lag4"="Log cases per 100k (4 lag)",
                   
                   "Clipped.log.Daily.Deaths.per.100k"="Log deaths per 100k", 
-                  "Clipped.log.Daily.Deaths.per.100k.lag1"="Log deaths per 100k (1 wk lag)",
-                  "Clipped.log.Daily.Deaths.per.100k.lag2"="Log deaths per 100k (2 wk lag)",
-                  "Clipped.log.Daily.Deaths.per.100k.lag3"="Log deaths per 100k (3 wk lag)",
-                  "Clipped.log.Daily.Deaths.per.100k.lag4"="Log deaths per 100k (4 wk lag)",
-                  "Clipped.log.Daily.Deaths.per.100k.lag5"="Log deaths per 100k (5 wk lag)",
+                  "Clipped.log.Daily.Deaths.per.100k.lag1"="Log deaths per 100k (1 lag)",
+                  "Clipped.log.Daily.Deaths.per.100k.lag2"="Log deaths per 100k (2 lag)",
+                  "Clipped.log.Daily.Deaths.per.100k.lag3"="Log deaths per 100k (3 lag)",
+                  "Clipped.log.Daily.Deaths.per.100k.lag4"="Log deaths per 100k (4 lag)",
+                  "Clipped.log.Daily.Deaths.per.100k.lag5"="Log deaths per 100k (5 lag)",
                   
-                  "Clipped.log.Daily.Deaths.per.100k.lead1"="Log deaths per 100k (1 wk lead)",
-                  "Clipped.log.Daily.Deaths.per.100k.lead2"="Log deaths per 100k (2 wk lead)",
-                  "Clipped.log.Daily.Deaths.per.100k.lead3"="Log deaths per 100k (3 wk lead)",
-                  "Clipped.log.Daily.Deaths.per.100k.lead4"="Log deaths per 100k (4 wk lead)",
-                  "Clipped.log.Daily.Deaths.per.100k.lead5"="Log deaths per 100k (5 wk lead)",
+                  "Clipped.log.Daily.Deaths.per.100k.lead1"="Log deaths per 100k (1 lead)",
+                  "Clipped.log.Daily.Deaths.per.100k.lead2"="Log deaths per 100k (2 lead)",
+                  "Clipped.log.Daily.Deaths.per.100k.lead3"="Log deaths per 100k (3 lead)",
+                  "Clipped.log.Daily.Deaths.per.100k.lead4"="Log deaths per 100k (4 lead)",
+                  "Clipped.log.Daily.Deaths.per.100k.lead5"="Log deaths per 100k (5 lead)",
                   
                   
                   
@@ -564,21 +567,6 @@ run_spec_2_state(SM, base_state_filter, "Specification 2 - State X Month", "M")
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ```{r}
 # PLOTTING
 ggplot(data=SM, aes(x=date))+
@@ -600,16 +588,9 @@ aggregate_by_date <- function(df){
    df = df %>% group_by(date) %>% summarize(COVID.CT.Tweet...COUNT = sum(COVID.CT.Tweet...COUNT, na.rm=TRUE),
                                              BERT.COVID.CT.Tweet...COUNT = sum(BERT.COVID.CT.Tweet...COUNT, na.rm=TRUE),
                                              Daily.Cases = sum(Daily.Cases, na.rm=TRUE),
-                                             Daily.Deaths = sum(Daily.Deaths, na.rm=TRUE)) %>% base_year_filter()
-
-   
-  df <- df %>% mutate_all(funs(diff = diff(.)))
-   
-   
-   # for(col in names(df)){
-   #   print(paste(col, "_diff", sep=""))
-   #   df[[paste(col, "_diff", sep="")]] <- diff(df$col)
-   # }
+                                             Daily.Deaths = sum(Daily.Deaths, na.rm=TRUE),
+                                             Diffed.Log.CT.Tweets.Per.Tweet = mean(Diffed.Log.CT.Tweets.Per.Tweet*Num..Users, na.rm=TRUE),
+                                             Diffed.Log.BERT.CT.Tweets.Per.Tweet = mean(Diffed.Log.BERT.CT.Tweets.Per.Tweet*Num..Users, na.rm=TRUE)) %>% base_year_filter()
 
    return(df)
    
@@ -625,7 +606,7 @@ agg_CW <- aggregate_by_date(CW)
 
 ```{r}
 
-library(patchwork)
+
 plot_agg_df <- function(agg_df) {
   ggplot(data=agg_df, aes(x=date))+
   geom_point(aes(y=COVID.CT.Tweet...COUNT), colour="red", label="CT")+
@@ -634,20 +615,61 @@ plot_agg_df <- function(agg_df) {
 
 # plot_agg_df(agg_CM)
 plt1 = ggplot(data=agg_SM, aes(x=date))+
-  geom_line(aes(y=diff(COVID.CT.Tweet...COUNT)), colour="blue")
+  ggtitle("COVID-19 Cases and Deaths vs. Conspiracy Theory Activity")+
+  geom_line(aes(y=Daily.Cases), colour="red")+
+  theme_minimal()+
+  theme(axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.x=element_blank(),
+        plot.title = element_text(hjust = 0.5, size=14))+
+  labs(subtitle="Cases")
 
 plt2 = ggplot(data=agg_SM, aes(x=date))+
-  geom_line(aes(y=diff(BERT.COVID.CT.Tweet...COUNT)), colour="purple")
+  geom_line(aes(y=Daily.Deaths), colour="black")+
+  theme_minimal()+
+  labs(subtitle="Deaths") +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.title.y=element_blank())
 
 plt3 = ggplot(data=agg_SM, aes(x=date))+
-  geom_line(aes(y=diff(Daily.Cases)), colour="red")
+  geom_line(aes(y=COVID.CT.Tweet...COUNT), colour="blue")+
+  theme_minimal()+
+  labs(subtitle="# CT Tweets")+
+  theme(axis.title.y=element_blank(),
+        axis.text.x=element_blank(),
+        axis.title.x=element_blank())
+
+
 
 plt4 = ggplot(data=agg_SM, aes(x=date))+
-  geom_line(aes(y=diff(Daily.Deaths)), colour="black")
+  geom_line(aes(y=BERT.COVID.CT.Tweet...COUNT), colour="purple")+
+  theme_minimal()+
+  labs(subtitle="# BERT CT Tweets") +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.title.y=element_blank())
+  
+
+plt5 = ggplot(data=agg_SM, aes(x=date))+
+  geom_line(aes(y=Diffed.Log.CT.Tweets.Per.Tweet), colour="brown")+
+  theme_minimal()+
+  labs(subtitle=TeX("$\\Delta$ Log CT per Tweet")) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.title.y=element_blank())
+
+plt6 = ggplot(data=agg_SM, aes(x=date))+
+  geom_line(aes(y=Diffed.Log.BERT.CT.Tweets.Per.Tweet), colour="orange")+
+  theme_minimal()+
+  labs(subtitle=TeX("$\\Delta$ Log BERT CT per Tweet"))+
+  theme(axis.title.y=element_blank())+
+  xlab("Date")
 
 
+plot_grid(plt1, plt2, plt3, ncol = 1, scale=rep(1,3))
 
-# plt1 + plt2 + plt3 + plt4 + plot_layout(ncol=1)
+plot_grid(plt4, plt5, plt6, ncol = 1, scale=rep(1,3))
 ```
 
 ```{r}
