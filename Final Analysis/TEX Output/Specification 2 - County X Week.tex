@@ -1,42 +1,42 @@
-\begin{tabular}{lcccccccc}
+\begin{tabular}{lcccc}
 \tabularnewline\midrule\midrule
-Dependent Variables:&\multicolumn{2}{c}{Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months}&\multicolumn{2}{c}{Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months}&\multicolumn{2}{c}{Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months}&\multicolumn{2}{c}{Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months}\\
-Model:&(1) & (2) & (3) & (4) & (5) & (6) & (7) & (8)\\
-\midrule \emph{Variables}&   &   &   &   &   &   &   &  \\
-Intercept&-0.00104 &    & -0.00104 &    & 0.00002 &    & 0.00002 &   \\
-  &(0.00509) &    & (0.00509) &    & (0.00245) &    & (0.00245) &   \\
-Log cases per 100k (4 lag)&0.00356$^{*}$ & 0.00356$^{*}$ & 0.00356$^{*}$ & 0.00356$^{*}$ &    &    &    &   \\
-  &(0.00206) & (0.00202) & (0.00206) & (0.00202) &    &    &    &   \\
-Log cases per 100k (3 lag)&-0.00459$^{*}$ & -0.00458$^{*}$ & -0.00459$^{*}$ & -0.00458$^{*}$ &    &    &    &   \\
-  &(0.00254) & (0.00277) & (0.00254) & (0.00277) &    &    &    &   \\
-Log cases per 100k (2 lag)&0.00034 & 0.00036 & 0.00034 & 0.00036 &    &    &    &   \\
-  &(0.00261) & (0.00267) & (0.00261) & (0.00267) &    &    &    &   \\
-Log cases per 100k (1 lag)&0.00092 & 0.00092 & 0.00092 & 0.00092 &    &    &    &   \\
-  &(0.00263) & (0.00321) & (0.00263) & (0.00321) &    &    &    &   \\
-Log cases per 100k&-0.00206 & -0.00205 & -0.00206 & -0.00205 &    &    &    &   \\
-  &(0.00256) & (0.00318) & (0.00256) & (0.00318) &    &    &    &   \\
-Log cases per 100k (1 lead)&0.00211 & 0.00216 & 0.00211 & 0.00216 &    &    &    &   \\
-  &(0.00215) & (0.00220) & (0.00215) & (0.00220) &    &    &    &   \\
-Log deaths per 100k (1 lag)&   &    &    &    & 0.00233 & 0.00227 & 0.00233 & 0.00227\\
-  &   &    &    &    & (0.00233) & (0.00245) & (0.00233) & (0.00245)\\
-Log deaths per 100k&   &    &    &    & -0.00175 & -0.00179 & -0.00175 & -0.00179\\
-  &   &    &    &    & (0.00245) & (0.00280) & (0.00245) & (0.00280)\\
-Log deaths per 100k (1 lead)&   &    &    &    & 0.00068 & 0.00065 & 0.00068 & 0.00065\\
-  &   &    &    &    & (0.00253) & (0.00270) & (0.00253) & (0.00270)\\
-Log deaths per 100k (2 lead)&   &    &    &    & 0.00264 & 0.00261 & 0.00264 & 0.00261\\
-  &   &    &    &    & (0.00255) & (0.00308) & (0.00255) & (0.00308)\\
-Log deaths per 100k (3 lead)&   &    &    &    & -0.00098 & -0.00102 & -0.00098 & -0.00102\\
-  &   &    &    &    & (0.00245) & (0.00298) & (0.00245) & (0.00298)\\
-Log deaths per 100k (4 lead)&   &    &    &    & -0.00320 & -0.00324 & -0.00320 & -0.00324\\
-  &   &    &    &    & (0.00231) & (0.00239) & (0.00231) & (0.00239)\\
-\midrule \emph{Fixed-effects}&   &   &   &   &   &   &   &  \\
-County &  & Yes &  & Yes &  & Yes &  & Yes\\
-\midrule \emph{Fit statistics}&  & & & & & & & \\
-Standard-Errors& Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)\\
-Observations & 46,927&46,927&46,927&46,927&46,899&46,899&46,899&46,899\\
-R$^2$ & 0.00013&0.00043&0.00013&0.00043&0.00011&0.00039&0.00011&0.00039\\
-Within R$^2$ & &0.00013&&0.00013&&0.00010&&0.00010\\
-\midrule\midrule\multicolumn{9}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+Dependent Variable:&\multicolumn{4}{c}{Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months}\\
+Model:&(1) & (2) & (3) & (4)\\
+\midrule \emph{Variables}&   &   &   &  \\
+Intercept&-0.00104 &    & 0.00002 &   \\
+  &(0.00509) &    & (0.00245) &   \\
+Log cases per 100k (4 lag)&0.00356$^{*}$ & 0.00356$^{*}$ &    &   \\
+  &(0.00206) & (0.00202) &    &   \\
+Log cases per 100k (3 lag)&-0.00459$^{*}$ & -0.00458$^{*}$ &    &   \\
+  &(0.00254) & (0.00277) &    &   \\
+Log cases per 100k (2 lag)&0.00034 & 0.00036 &    &   \\
+  &(0.00261) & (0.00267) &    &   \\
+Log cases per 100k (1 lag)&0.00092 & 0.00092 &    &   \\
+  &(0.00263) & (0.00321) &    &   \\
+Log cases per 100k&-0.00206 & -0.00205 &    &   \\
+  &(0.00256) & (0.00318) &    &   \\
+Log cases per 100k (1 lead)&0.00211 & 0.00216 &    &   \\
+  &(0.00215) & (0.00220) &    &   \\
+Log deaths per 100k (1 lag)&   &    & 0.00233 & 0.00227\\
+  &   &    & (0.00233) & (0.00245)\\
+Log deaths per 100k&   &    & -0.00175 & -0.00179\\
+  &   &    & (0.00245) & (0.00280)\\
+Log deaths per 100k (1 lead)&   &    & 0.00068 & 0.00065\\
+  &   &    & (0.00253) & (0.00270)\\
+Log deaths per 100k (2 lead)&   &    & 0.00264 & 0.00261\\
+  &   &    & (0.00255) & (0.00308)\\
+Log deaths per 100k (3 lead)&   &    & -0.00098 & -0.00102\\
+  &   &    & (0.00245) & (0.00298)\\
+Log deaths per 100k (4 lead)&   &    & -0.00320 & -0.00324\\
+  &   &    & (0.00231) & (0.00239)\\
+\midrule \emph{Fixed-effects}&   &   &   &  \\
+County &  & Yes &  & Yes\\
+\midrule \emph{Fit statistics}&  & & & \\
+Standard-Errors& Heteroskedasticity-robust&FIPS)&Heteroskedasticity-robust&FIPS)\\
+Observations & 46,927&46,927&46,899&46,899\\
+R$^2$ & 0.00013&0.00043&0.00011&0.00039\\
+Within R$^2$ & &0.00013&&0.00010\\
+\midrule\midrule\multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
 \end{tabular}
 
 
