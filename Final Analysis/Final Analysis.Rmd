@@ -56,10 +56,12 @@ SM <- SM %>% filter(State!="ALASKA" & State!="HAWAII")
 ```{r}
 CW = CW %>% 
   group_by(FIPS) %>% 
+  mutate(Clipped.log.Daily.Cases.per.100k.lead1 = dplyr::lead(Clipped.log.Daily.Cases.per.100k, n=1, order_by=date, default=NA)) %>% 
   mutate(Clipped.log.Daily.Cases.per.100k.lag1 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=1, order_by=date, default=NA)) %>% 
   mutate(Clipped.log.Daily.Cases.per.100k.lag2 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=2, order_by=date, default=NA)) %>% 
   mutate(Clipped.log.Daily.Cases.per.100k.lag3 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=3, order_by=date, default=NA)) %>% 
-  mutate(Clipped.log.Daily.Cases.per.100k.lag4 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=4, order_by=date, default=NA))
+  mutate(Clipped.log.Daily.Cases.per.100k.lag4 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=4, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Cases.per.100k.lag5 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=5, order_by=date, default=NA))
   
 # CW = CW %>% 
 #   group_by(FIPS) %>% 
@@ -74,10 +76,12 @@ CW = CW %>%
 
 SW = SW %>% 
   group_by(State) %>% 
+  mutate(Clipped.log.Daily.Cases.per.100k.lead1 = dplyr::lead(Clipped.log.Daily.Cases.per.100k, n=1, order_by=date, default=NA)) %>% 
   mutate(Clipped.log.Daily.Cases.per.100k.lag1 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=1, order_by=date, default=NA)) %>% 
   mutate(Clipped.log.Daily.Cases.per.100k.lag2 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=2, order_by=date, default=NA)) %>% 
   mutate(Clipped.log.Daily.Cases.per.100k.lag3 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=3, order_by=date, default=NA)) %>% 
-  mutate(Clipped.log.Daily.Cases.per.100k.lag4 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=4, order_by=date, default=NA))
+  mutate(Clipped.log.Daily.Cases.per.100k.lag4 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=4, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Cases.per.100k.lag5 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=5, order_by=date, default=NA))
 
 # SW = SW %>% 
 #   group_by(State) %>% 
@@ -94,105 +98,137 @@ SW = SW %>%
 CW = CW %>% 
   group_by(FIPS) %>% 
   mutate(Clipped.log.Daily.Deaths.per.100k.lag1 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=1, order_by=date, default=NA)) %>% 
-  mutate(Clipped.log.Daily.Deaths.per.100k.lag2 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=2, order_by=date, default=NA)) %>% 
-  mutate(Clipped.log.Daily.Deaths.per.100k.lag3 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=3, order_by=date, default=NA)) %>% 
-  mutate(Clipped.log.Daily.Deaths.per.100k.lag4 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=4, order_by=date, default=NA))
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead1 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=1, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead2 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=2, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead3 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=3, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead4 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=4, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead5 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=5, order_by=date, default=NA))
   
+
+CM = CM %>% 
+  group_by(FIPS) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lag1 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=1, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead1 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=1, order_by=date, default=NA)) %>%
+  mutate(Clipped.log.Daily.Cases.per.100k.lag1 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=1, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Cases.per.100k.lead1 = dplyr::lead(Clipped.log.Daily.Cases.per.100k, n=1, order_by=date, default=NA))
 # CW = CW %>% 
 #   group_by(FIPS) %>% 
-#   mutate(Clipped.log.Daily.Deaths.per.100k.lag2 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=2, order_by=date, default=NA))
+#   mutate(Clipped.log.Daily.Deaths.per.100k.lead2 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=2, order_by=date, default=NA))
 # CW = CW %>% 
 #   group_by(FIPS) %>% 
-#   mutate(Clipped.log.Daily.Deaths.per.100k.lag3 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=3, order_by=date, default=NA))
+#   mutate(Clipped.log.Daily.Deaths.per.100k.lead3 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=3, order_by=date, default=NA))
 # CW = CW %>% 
 #   group_by(FIPS) %>% 
-#   mutate(Clipped.log.Daily.Deaths.per.100k.lag4 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=4, order_by=date, default=NA))
+#   mutate(Clipped.log.Daily.Deaths.per.100k.lead4 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=4, order_by=date, default=NA))
 
 
 SW = SW %>% 
   group_by(State) %>% 
   mutate(Clipped.log.Daily.Deaths.per.100k.lag1 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=1, order_by=date, default=NA)) %>% 
-  mutate(Clipped.log.Daily.Deaths.per.100k.lag2 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=2, order_by=date, default=NA)) %>% 
-  mutate(Clipped.log.Daily.Deaths.per.100k.lag3 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=3, order_by=date, default=NA)) %>% 
-  mutate(Clipped.log.Daily.Deaths.per.100k.lag4 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=4, order_by=date, default=NA))
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead1 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=1, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead2 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=2, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead3 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=3, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead4 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=4, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead5 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=5, order_by=date, default=NA))
+         
+SM = SM %>% 
+  group_by(State) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lag1 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=1, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Deaths.per.100k.lead1 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=1, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Cases.per.100k.lag1 = dplyr::lag(Clipped.log.Daily.Cases.per.100k, n=1, order_by=date, default=NA)) %>% 
+  mutate(Clipped.log.Daily.Cases.per.100k.lead1 = dplyr::lead(Clipped.log.Daily.Cases.per.100k, n=1, order_by=date, default=NA))
 
-# SW = SW %>% 
-#   group_by(State) %>% 
-#   mutate(Clipped.log.Daily.Deaths.per.100k.lag2 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=2, order_by=date, default=NA))
-# SW = SW %>% 
-#   group_by(State) %>% 
-#   mutate(Clipped.log.Daily.Deaths.per.100k.lag3 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=3, order_by=date, default=NA))
-# SW = SW %>% 
-#   group_by(State) %>% 
-#   mutate(Clipped.log.Daily.Deaths.per.100k.lag4 = dplyr::lag(Clipped.log.Daily.Deaths.per.100k, n=4, order_by=date, default=NA))
+# SW = SW %>%
+#   group_by(State) %>%
+#   mutate(Clipped.log.Daily.Deaths.per.100k.lead2 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=2, order_by=date, default=NA))
+# SW = SW %>%
+#   group_by(State) %>%
+#   mutate(Clipped.log.Daily.Deaths.per.100k.lead3 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=3, order_by=date, default=NA))
+# SW = SW %>%
+#   group_by(State) %>%
+#   mutate(Clipped.log.Daily.Deaths.per.100k.lead4 = dplyr::lead(Clipped.log.Daily.Deaths.per.100k, n=4, order_by=date, default=NA))
 ```
+
 
 
 ```{r}
 # SPECIFICATION 1 PERMUTATIONS
 
+# week_case_RHS = Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1
+# 
+# week_death_RHS = Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4
+  
+
+
 
 # NO FE'S - WEEK
-spec_1_cases = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4#| factor(FIPS)
+spec_1_cases = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1
 
-spec_1_deaths = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1#| factor(FIPS)
+spec_1_deaths = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4
 
-spec_1_BERT_cases = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4#| factor(FIPS)
+spec_1_BERT_cases = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1
 
-spec_1_BERT_deaths = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1#| factor(FIPS)
+spec_1_BERT_deaths = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4
 
 
 # FE FIPS - WEEK
-spec_1_cases_FE_FIPS = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4| factor(FIPS)
+spec_1_cases_FE_FIPS = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1 | factor(FIPS)
 
-spec_1_deaths_FE_FIPS = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1| factor(FIPS)
+spec_1_deaths_FE_FIPS = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4| factor(FIPS)
 
-spec_1_BERT_cases_FE_FIPS = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4| factor(FIPS)
+spec_1_BERT_cases_FE_FIPS = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1 | factor(FIPS)
 
-spec_1_BERT_deaths_FE_FIPS = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1| factor(FIPS)
+spec_1_BERT_deaths_FE_FIPS = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4 | factor(FIPS)
 
 
 # FE STATE - WEEK
-spec_1_cases_FE_State = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4| factor(State)
+spec_1_cases_FE_State = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1| factor(State)
 
-spec_1_deaths_FE_State = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1| factor(State)
+spec_1_deaths_FE_State = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4 | factor(State)
 
-spec_1_BERT_cases_FE_State = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4| factor(State)
+spec_1_BERT_cases_FE_State = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1| factor(State)
 
-spec_1_BERT_deaths_FE_State = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1| factor(State)
+spec_1_BERT_deaths_FE_State = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4 | factor(State)
 
 
+
+
+
+
+
+# month_case_RHS = Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1
+# month_death_RHS = Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1
 
 
 
 # NO FE'S - MONTH 
-spec_1_cases_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k
+spec_1_cases_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1
 
-spec_1_deaths_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k
+spec_1_deaths_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1
 
-spec_1_BERT_cases_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k
+spec_1_BERT_cases_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1
 
-spec_1_BERT_deaths_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k
+spec_1_BERT_deaths_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1
 
 
 # FE FIPS - MONTH
-spec_1_cases_FE_FIPS_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k
+spec_1_cases_FE_FIPS_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1
 
-spec_1_deaths_FE_FIPS_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k | factor(FIPS)
+spec_1_deaths_FE_FIPS_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 | factor(FIPS)
 
-spec_1_BERT_cases_FE_FIPS_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k | factor(FIPS)
+spec_1_BERT_cases_FE_FIPS_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1 | factor(FIPS)
 
-spec_1_BERT_deaths_FE_FIPS_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k | factor(FIPS)
+spec_1_BERT_deaths_FE_FIPS_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 | factor(FIPS)
 
 
 # FE STATE - MONTH
-spec_1_cases_FE_State_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k | factor(State)
+spec_1_cases_FE_State_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1 | factor(State)
 
-spec_1_deaths_FE_State_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k | factor(State)
+spec_1_deaths_FE_State_month = Diffed.Log.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 | factor(State)
 
-spec_1_BERT_cases_FE_State_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k | factor(State)
+spec_1_BERT_cases_FE_State_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1 | factor(State)
 
-spec_1_BERT_deaths_FE_State_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k | factor(State)
+spec_1_BERT_deaths_FE_State_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 | factor(State)
 
 ```
 
@@ -201,64 +237,64 @@ spec_1_BERT_deaths_FE_State_month = Diffed.Log.BERT.CT.Tweets.Per.Tweet ~ Clippe
 # SPECIFICATION 2 PERMUTATIONS
 
 # NO FE'S - WEEK
-spec_2_cases = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4#| factor(FIPS)
+spec_2_cases = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1#| factor(FIPS)
 
-spec_2_deaths = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1#| factor(FIPS)
+spec_2_deaths = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4#| factor(FIPS)
 
-spec_2_BERT_cases = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4#| factor(FIPS)
+spec_2_BERT_cases = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1#| factor(FIPS)
 
-spec_2_BERT_deaths = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1#| factor(FIPS)
+spec_2_BERT_deaths = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4#| factor(FIPS)
 
 
 # FE FIPS - WEEK
-spec_2_cases_FE_FIPS = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4| factor(FIPS)
+spec_2_cases_FE_FIPS = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1| factor(FIPS)
 
-spec_2_deaths_FE_FIPS = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1| factor(FIPS)
+spec_2_deaths_FE_FIPS = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4| factor(FIPS)
 
-spec_2_BERT_cases_FE_FIPS = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4| factor(FIPS)
+spec_2_BERT_cases_FE_FIPS = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1| factor(FIPS)
 
-spec_2_BERT_deaths_FE_FIPS = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1| factor(FIPS)
+spec_2_BERT_deaths_FE_FIPS = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4| factor(FIPS)
 
 
 # FE STATE - WEEK
-spec_2_cases_FE_State = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4| factor(State)
+spec_2_cases_FE_State = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1| factor(State)
 
-spec_2_deaths_FE_State = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1| factor(State)
+spec_2_deaths_FE_State = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4| factor(State)
 
-spec_2_BERT_cases_FE_State = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag4| factor(State)
+spec_2_BERT_cases_FE_State = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag4 + Clipped.log.Daily.Cases.per.100k.lag3 + Clipped.log.Daily.Cases.per.100k.lag2 + Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1| factor(State)
 
-spec_2_BERT_deaths_FE_State = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lag1| factor(State)
+spec_2_BERT_deaths_FE_State = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 + Clipped.log.Daily.Deaths.per.100k.lead2 + Clipped.log.Daily.Deaths.per.100k.lead3 + Clipped.log.Daily.Deaths.per.100k.lead4| factor(State)
 
 
 
 # NO FE'S - MONTH
-spec_2_cases_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k
+spec_2_cases_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1
 
-spec_2_deaths_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k
+spec_2_deaths_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1
 
-spec_2_BERT_cases_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k
+spec_2_BERT_cases_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1
 
-spec_2_BERT_deaths_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k
+spec_2_BERT_deaths_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1
 
 
 # FE FIPS - MONTH
-spec_2_cases_FE_FIPS_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k | factor(FIPS)
+spec_2_cases_FE_FIPS_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1 | factor(FIPS)
 
-spec_2_deaths_FE_FIPS_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k | factor(FIPS)
+spec_2_deaths_FE_FIPS_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 | factor(FIPS)
 
-spec_2_BERT_cases_FE_FIPS_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k | factor(FIPS)
+spec_2_BERT_cases_FE_FIPS_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1 | factor(FIPS)
 
-spec_2_BERT_deaths_FE_FIPS_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k | factor(FIPS)
+spec_2_BERT_deaths_FE_FIPS_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k  + Clipped.log.Daily.Deaths.per.100k.lead1 | factor(FIPS)
 
 
 # FE STATE - MONTH
-spec_2_cases_FE_State_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k | factor(State)
+spec_2_cases_FE_State_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1 | factor(State)
 
-spec_2_deaths_FE_State_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k | factor(State)
+spec_2_deaths_FE_State_month = Diffed.Log.Stopped.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 | factor(State)
 
-spec_2_BERT_cases_FE_State_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k | factor(State)
+spec_2_BERT_cases_FE_State_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Cases.per.100k.lag1 + Clipped.log.Daily.Cases.per.100k + Clipped.log.Daily.Cases.per.100k.lead1 | factor(State)
 
-spec_2_BERT_deaths_FE_State_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k | factor(State)
+spec_2_BERT_deaths_FE_State_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.After...3.Months ~ Clipped.log.Daily.Deaths.per.100k.lag1 + Clipped.log.Daily.Deaths.per.100k + Clipped.log.Daily.Deaths.per.100k.lead1 | factor(State)
 
 
 
@@ -269,6 +305,7 @@ spec_2_BERT_deaths_FE_State_month = Diffed.Log.Stopped.BERT.COVID.CT.Tweets.Afte
 
 ```{r}
 renaming_dict = c("(Intercept)"="Intercept",
+                  "Clipped.log.Daily.Cases.per.100k.lead1"="Log cases per 100k (1 wk lead)",
                   "Clipped.log.Daily.Cases.per.100k"="Log cases per 100k", 
                   "Clipped.log.Daily.Cases.per.100k.lag1"="Log cases per 100k (1 wk lag)",
                   "Clipped.log.Daily.Cases.per.100k.lag2"="Log cases per 100k (2 wk lag)",
@@ -280,6 +317,15 @@ renaming_dict = c("(Intercept)"="Intercept",
                   "Clipped.log.Daily.Deaths.per.100k.lag2"="Log deaths per 100k (2 wk lag)",
                   "Clipped.log.Daily.Deaths.per.100k.lag3"="Log deaths per 100k (3 wk lag)",
                   "Clipped.log.Daily.Deaths.per.100k.lag4"="Log deaths per 100k (4 wk lag)",
+                  "Clipped.log.Daily.Deaths.per.100k.lag5"="Log deaths per 100k (5 wk lag)",
+                  
+                  "Clipped.log.Daily.Deaths.per.100k.lead1"="Log deaths per 100k (1 wk lead)",
+                  "Clipped.log.Daily.Deaths.per.100k.lead2"="Log deaths per 100k (2 wk lead)",
+                  "Clipped.log.Daily.Deaths.per.100k.lead3"="Log deaths per 100k (3 wk lead)",
+                  "Clipped.log.Daily.Deaths.per.100k.lead4"="Log deaths per 100k (4 wk lead)",
+                  "Clipped.log.Daily.Deaths.per.100k.lead5"="Log deaths per 100k (5 wk lead)",
+                  
+                  
                   
                   "Diffed.Log.CT.Tweets.Per.Tweet"="Diffed Log CT",
                   "Diffed.Log.BERT.CT.Tweets.Per.Tweet"="Diffed Log BERT CT",
@@ -294,7 +340,6 @@ renaming_dict = c("(Intercept)"="Intercept",
                   "CW_spec_1_deaths_BERT"="",
                   "CW_spec_1_deaths_FE_FIPS"="",
                   "CW_spec_1_deaths_BERT_FE_FIPS"=""
-                  
                   )
 ```
 
@@ -408,6 +453,7 @@ run_spec_1_county(CW, urban_county_filter, "Specification 1 - County X Week - UR
 run_spec_1_county(CM, urban_county_filter, "Specification 1 - County X Month - URBAN", "M")
 
 ```
+
 
 ```{r}
 run_spec_1_state(SW, base_state_filter, "Specification 1 - State X Week", "W")
